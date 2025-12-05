@@ -572,13 +572,16 @@ La aplicación está funcional con:
 - ✅ Estructura de múltiples páginas sin superposición
 - ✅ Encabezado unificado con estructura de tabla (30% logos, 45% título, 25% metadatos)
 - ✅ Línea de proceso integrada en el encabezado
-- ✅ Paleta de colores blanco/negro profesional (excepto logos)
+- ✅ Paleta de colores blanco/negro profesional (excepto logos y encabezados de tablas de responsabilidades)
 - ✅ Tipografía Arial, Helvetica, sans-serif
 - ✅ Formato de fechas DD/MM/YYYY
 - ✅ Total de páginas configurable
 - ✅ Evidencias fotográficas por dispositivo
 - ✅ Logo de Netux cargando correctamente en PDF (base64)
-- ✅ Footer con formato corporativo
+- ✅ Footer con formato corporativo (encabezados naranjas)
+- ✅ Sección INFORMACIÓN PRINCIPAL sin bordes de tabla (formato etiqueta-valor)
+- ✅ Tabla de responsabilidades con encabezado naranja (#E94E10)
+- ✅ Línea "Fecha elaboración informe" debajo de tabla de responsabilidades
 
 ### Commits Realizados
 
@@ -588,3 +591,100 @@ La aplicación está funcional con:
 | `089ab90` | fix: Actualizar color a naranja NETUX RGB(233,78,16), corregir texto sección 2 y formato de firmas finales |
 | `78e0789` | fix: Corregir logo roto en PDF usando base64 y actualizar footer corporativo                               |
 | `1844c13` | fix: Rediseño completo del encabezado corporativo unificado                                                |
+| `b365a14` | fix: Implementar formato corporativo con encabezados naranja y seccion info sin bordes                     |
+
+---
+
+## Quinta Iteración: Correcciones de Formato Corporativo (Diciembre 2024)
+
+### Diagnóstico de Problemas
+
+Se identificaron 10 discrepancias entre el formato generado y el documento corporativo de referencia "Informe_formato_actual":
+
+1. **Sección INFORMACIÓN PRINCIPAL**: Usaba tabla con bordes visibles
+2. **Logo Netux**: Tamaño demasiado pequeño
+3. **Tabla de responsabilidades**: Sin encabezado naranja
+4. **Footer de página**: Sin encabezado naranja
+5. **Firmas finales**: Formato vertical en lugar de tabla horizontal
+6. **Falta línea "Fecha elaboración informe"**
+
+### Correcciones Implementadas
+
+#### 1. INFORMACIÓN PRINCIPAL - Sin Bordes
+
+Cambio de tabla con bordes a formato etiqueta-valor sin bordes:
+
+```html
+<!-- ANTES: Tabla con bordes -->
+<table class="info-table">
+  <tr>
+    <td class="label-cell">Título:</td>
+    <td>...</td>
+  </tr>
+</table>
+
+<!-- DESPUÉS: Formato etiqueta-valor sin bordes -->
+<div class="info-principal">
+  <div class="info-row">
+    <span class="info-label">Título:</span>
+    <span class="info-value">{{ datos.titulo }}</span>
+  </div>
+</div>
+```
+
+#### 2. Tabla de Responsabilidades con Encabezado Naranja
+
+```html
+<table class="responsibilities-table">
+  <tr>
+    <th>Elaboró</th>
+    <th>Revisó</th>
+    <th>Aprobó</th>
+  </tr>
+  <tr>
+    <td>Nombre<br /><span class="cargo">Cargo</span><br />NETUX SAS</td>
+    ...
+  </tr>
+</table>
+<p class="fecha-elaboracion-informe">Fecha elaboración informe: DD/MM/YYYY</p>
+```
+
+#### 3. CSS para Encabezados Naranjas
+
+```css
+:root {
+  --netux-orange: #e94e10; /* Naranja corporativo - SOLO para encabezados de tablas */
+}
+
+.responsibilities-table th {
+  background-color: var(--netux-orange);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #000;
+}
+
+.footer-label {
+  background-color: var(--netux-orange);
+  color: white;
+}
+```
+
+### Archivos Modificados (Quinta Iteración)
+
+| Archivo                            | Cambios                                                                                                                 |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `static/css/report.css`            | +40 líneas - Variable --netux-orange, estilos .info-principal, .responsibilities-table                                  |
+| `templates/informe_desempeno.html` | Sección INFORMACIÓN PRINCIPAL sin tabla, tabla de responsabilidades con encabezado naranja, firmas finales actualizadas |
+
+### Especificaciones de Color
+
+| Elemento                            | Color                              |
+| ----------------------------------- | ---------------------------------- |
+| Texto general                       | Negro (#000000)                    |
+| Bordes de tablas                    | Negro (#000000)                    |
+| Fondo de documento                  | Blanco (#FFFFFF)                   |
+| Encabezados tabla responsabilidades | Naranja (#E94E10) con texto blanco |
+| Encabezados footer                  | Naranja (#E94E10) con texto blanco |
+| Logos                               | Colores originales                 |
