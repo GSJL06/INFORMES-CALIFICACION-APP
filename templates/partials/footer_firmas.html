@@ -1,22 +1,23 @@
 <footer class="report-footer">
-    <table class="footer-table">
-        <tr>
-            <td class="footer-cell">
-                <strong>Elaboró:</strong><br>
-                {{ datos.elaboro_nombre }}<br>
-                <small>{{ datos.elaboro_cargo }}</small>
-            </td>
-            <td class="footer-cell">
-                <strong>Revisó:</strong><br>
-                {{ datos.reviso_nombre }}<br>
-                <small>{{ datos.reviso_cargo }}</small>
-            </td>
-            <td class="footer-cell">
-                <strong>Aprobó:</strong><br>
-                {{ datos.aprobo_nombre }}<br>
-                <small>{{ datos.aprobo_cargo }}</small>
-            </td>
-        </tr>
-    </table>
+  <table class="footer-table">
+    <tr>
+      <td class="footer-cell footer-label">Elaboró:</td>
+      <td class="footer-cell footer-label">Revisó:</td>
+      <td class="footer-cell footer-label">Aprobó:</td>
+    </tr>
+    <tr>
+      <td class="footer-cell footer-content">
+        <div class="footer-name">{{ datos.elaboro_nombre }}</div>
+        <div class="footer-cargo">{{ datos.elaboro_cargo }}</div>
+      </td>
+      <td class="footer-cell footer-content">
+        <div class="footer-name">{{ datos.reviso_nombre }}</div>
+        <div class="footer-cargo">{{ datos.reviso_cargo }}</div>
+      </td>
+      <td class="footer-cell footer-content">
+        <div class="footer-name">{{ datos.aprobo_nombre }}</div>
+        <div class="footer-cargo">{{ datos.aprobo_cargo }}</div>
+      </td>
+    </tr>
+  </table>
 </footer>
-

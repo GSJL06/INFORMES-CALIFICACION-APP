@@ -6,24 +6,45 @@ import uuid
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session
 from werkzeug.utils import secure_filename
+import base64
 
 # Configuración de la aplicación
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
 
+# Ruta base del proyecto
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
+
 # Configuración de uploads
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'uploads')
+UPLOAD_FOLDER = os.path.join(STATIC_FOLDER, 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_LENGTH
+app.config['STATIC_FOLDER'] = STATIC_FOLDER
 
 # Crear carpetas necesarias
 os.makedirs(os.path.join(UPLOAD_FOLDER, 'logos'), exist_ok=True)
 os.makedirs(os.path.join(UPLOAD_FOLDER, 'evidencias'), exist_ok=True)
 os.makedirs(os.path.join(UPLOAD_FOLDER, 'firmas'), exist_ok=True)
 os.makedirs(os.path.join(UPLOAD_FOLDER, 'graficos'), exist_ok=True)
+
+
+def get_image_base64(filepath):
+    """Convertir imagen a base64 para incrustar en HTML/PDF"""
+    try:
+        full_path = os.path.join(STATIC_FOLDER, filepath) if not os.path.isabs(filepath) else filepath
+        if os.path.exists(full_path):
+            with open(full_path, 'rb') as f:
+                data = f.read()
+            ext = filepath.rsplit('.', 1)[-1].lower()
+            mime_type = {'png': 'image/png', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'gif': 'image/gif'}.get(ext, 'image/png')
+            return f"data:{mime_type};base64,{base64.b64encode(data).decode('utf-8')}"
+    except Exception as e:
+        print(f"Error cargando imagen {filepath}: {e}")
+    return None
 
 
 def allowed_file(filename):
@@ -177,9 +198,39 @@ def descargar(formato):
         flash('No hay datos de informe para descargar', 'warning')
         return redirect(url_for('index'))
 
+    # Preparar datos con imágenes en base64 para PDF
+    datos_pdf = datos.copy()
+
+    # Convertir logo de Netux a base64
+    netux_logo_path = os.path.join(STATIC_FOLDER, 'Netux_Logo.png')
+    datos_pdf['netux_logo_base64'] = get_image_base64(netux_logo_path)
+
+    # Convertir logo del cliente a base64 si existe
+    if datos.get('logo_cliente'):
+        datos_pdf['logo_cliente_base64'] = get_image_base64(datos['logo_cliente'])
+
+    # Convertir evidencias de dispositivos a base64
+    if datos.get('dispositivos'):
+        dispositivos_pdf = []
+        for disp in datos['dispositivos']:
+            disp_pdf = disp.copy()
+            if disp.get('evidencia'):
+                disp_pdf['evidencia_base64'] = get_image_base64(disp['evidencia'])
+            dispositivos_pdf.append(disp_pdf)
+        datos_pdf['dispositivos'] = dispositivos_pdf
+
+    # Convertir evidencias generales a base64
+    if datos.get('evidencias'):
+        evidencias_base64 = []
+        for ev in datos['evidencias']:
+            ev_b64 = get_image_base64(ev)
+            if ev_b64:
+                evidencias_base64.append(ev_b64)
+        datos_pdf['evidencias_base64'] = evidencias_base64
+
     if formato == 'html':
-        # Generar HTML y enviarlo como descarga
-        html_content = render_template('informe_desempeno.html', datos=datos, preview_mode=False)
+        # Generar HTML con imágenes base64 para que funcionen offline
+        html_content = render_template('informe_desempeno.html', datos=datos_pdf, preview_mode=False, pdf_mode=True)
 
         # Guardar temporalmente
         temp_path = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_informe.html')
@@ -196,11 +247,11 @@ def descargar(formato):
         try:
             from weasyprint import HTML
 
-            html_content = render_template('informe_desempeno.html', datos=datos, preview_mode=False)
+            html_content = render_template('informe_desempeno.html', datos=datos_pdf, preview_mode=False, pdf_mode=True)
 
-            # Generar PDF
+            # Generar PDF con base_url apuntando a la carpeta static
             temp_pdf = os.path.join(app.config['UPLOAD_FOLDER'], 'temp_informe.pdf')
-            HTML(string=html_content, base_url=request.url_root).write_pdf(temp_pdf)
+            HTML(string=html_content, base_url=STATIC_FOLDER).write_pdf(temp_pdf)
 
             return send_file(
                 temp_pdf,

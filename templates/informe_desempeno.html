@@ -51,18 +51,31 @@
         <!-- Encabezado -->
         <header class="report-header">
           <div class="header-left">
-            {% if datos.logo_cliente %}
+            {% if pdf_mode and datos.logo_cliente_base64 %}
+            <img
+              src="{{ datos.logo_cliente_base64 }}"
+              alt="Logo Cliente"
+              class="logo-cliente"
+            />
+            {% elif datos.logo_cliente %}
             <img
               src="{{ url_for('static', filename=datos.logo_cliente) }}"
               alt="Logo Cliente"
               class="logo-cliente"
             />
-            {% endif %}
+            {% endif %} {% if pdf_mode and datos.netux_logo_base64 %}
+            <img
+              src="{{ datos.netux_logo_base64 }}"
+              alt="Netux"
+              class="logo-netux"
+            />
+            {% else %}
             <img
               src="{{ url_for('static', filename='Netux_Logo.png') }}"
               alt="Netux"
               class="logo-netux"
             />
+            {% endif %}
           </div>
           <div class="header-center">
             <h1>INFORME DE CALIFICACIÓN DE DESEMPEÑO</h1>
@@ -413,7 +426,14 @@
             %}
             <div class="device-evidence-block">
               <h4 class="device-title">{{ dispositivo.nombre }}</h4>
-              {% if dispositivo.evidencia %}
+              {% if pdf_mode and dispositivo.evidencia_base64 %}
+              <div class="device-evidence-image">
+                <img
+                  src="{{ dispositivo.evidencia_base64 }}"
+                  alt="Evidencia {{ dispositivo.nombre }}"
+                />
+              </div>
+              {% elif dispositivo.evidencia %}
               <div class="device-evidence-image">
                 <img
                   src="{{ url_for('static', filename=dispositivo.evidencia) }}"
@@ -429,7 +449,16 @@
               </div>
               {% endif %}
             </div>
-            {% endfor %} {% endif %} {% if datos.evidencias %}
+            {% endfor %} {% endif %} {% if pdf_mode and datos.evidencias_base64
+            %}
+            <div class="evidencias-generales">
+              {% for evidencia_b64 in datos.evidencias_base64 %}
+              <div class="evidencia-item">
+                <img src="{{ evidencia_b64 }}" alt="Evidencia" />
+              </div>
+              {% endfor %}
+            </div>
+            {% elif datos.evidencias %}
             <div class="evidencias-generales">
               {% for evidencia in datos.evidencias %}
               <div class="evidencia-item">

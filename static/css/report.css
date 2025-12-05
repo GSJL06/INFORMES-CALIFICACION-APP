@@ -396,33 +396,46 @@ body {
 /* ========== PIE DE PÁGINA ========== */
 .report-footer {
   margin-top: auto;
-  border-top: 2px solid var(--primary-color);
-  padding-top: 10px;
   background: white;
 }
 
 .footer-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 8pt;
+  font-size: 9pt;
+  border: 1px solid #000;
 }
 
 .footer-cell {
   width: 33.33%;
   text-align: center;
-  padding: 8px 5px;
-  border: 1px solid var(--border-color);
-  vertical-align: top;
+  padding: 5px 8px;
+  border: 1px solid #000;
+  vertical-align: middle;
 }
 
-.footer-cell strong {
-  color: var(--primary-color);
-  display: block;
-  margin-bottom: 3px;
+.footer-label {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 10pt;
+  padding: 6px 8px;
 }
 
-.footer-cell small {
-  color: #666;
+.footer-content {
+  min-height: 40px;
+  background: white;
+}
+
+.footer-name {
+  font-weight: bold;
+  font-size: 9pt;
+  margin-bottom: 2px;
+}
+
+.footer-cargo {
+  font-size: 8pt;
+  color: #333;
 }
 
 /* ========== BARRA DE VISTA PREVIA ========== */

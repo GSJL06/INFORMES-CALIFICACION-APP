@@ -336,6 +336,107 @@ Se identificaron y corrigieron los siguientes problemas:
 </table>
 ```
 
+### Correcciones Adicionales (05/12/2024 - Tercera Iteración)
+
+#### 1. Logo de Netux Roto en PDF
+
+**Problema:** El logo de Netux aparecía roto/no cargaba en el documento PDF generado.
+
+**Causa:** WeasyPrint no podía resolver las rutas relativas de las imágenes cuando se generaba el PDF desde un string HTML.
+
+**Solución:** Se implementó la conversión de imágenes a base64 para incrustarlas directamente en el HTML:
+
+```python
+import base64
+
+def get_image_base64(filepath):
+    """Convertir imagen a base64 para incrustar en HTML/PDF"""
+    try:
+        full_path = os.path.join(STATIC_FOLDER, filepath) if not os.path.isabs(filepath) else filepath
+        if os.path.exists(full_path):
+            with open(full_path, 'rb') as f:
+                data = f.read()
+            ext = filepath.rsplit('.', 1)[-1].lower()
+            mime_type = {'png': 'image/png', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'gif': 'image/gif'}.get(ext, 'image/png')
+            return f"data:{mime_type};base64,{base64.b64encode(data).decode('utf-8')}"
+    except Exception as e:
+        print(f"Error cargando imagen {filepath}: {e}")
+    return None
+```
+
+**Cambios en templates:**
+
+- Se agregó variable `pdf_mode` para detectar cuando se genera PDF
+- Los templates usan imágenes base64 cuando `pdf_mode=True`
+
+```html
+{% if pdf_mode and datos.netux_logo_base64 %}
+<img src="{{ datos.netux_logo_base64 }}" alt="Netux" class="logo-netux" />
+{% else %}
+<img
+  src="{{ url_for('static', filename='Netux_Logo.png') }}"
+  alt="Netux"
+  class="logo-netux"
+/>
+{% endif %}
+```
+
+#### 2. Formato de Footer Corporativo
+
+**Problema:** El footer no coincidía con el formato del documento corporativo.
+
+**Solución:** Se actualizó el footer con estructura de tabla con encabezados naranjas:
+
+```html
+<footer class="report-footer">
+  <table class="footer-table">
+    <tr>
+      <td class="footer-cell footer-label">Elaboró:</td>
+      <td class="footer-cell footer-label">Revisó:</td>
+      <td class="footer-cell footer-label">Aprobó:</td>
+    </tr>
+    <tr>
+      <td class="footer-cell footer-content">
+        <div class="footer-name">{{ datos.elaboro_nombre }}</div>
+        <div class="footer-cargo">{{ datos.elaboro_cargo }}</div>
+      </td>
+      <!-- Similar para Revisó y Aprobó -->
+    </tr>
+  </table>
+</footer>
+```
+
+```css
+.footer-label {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  font-size: 10pt;
+}
+
+.footer-content {
+  min-height: 40px;
+  background: white;
+}
+```
+
+### Evaluación de Viabilidad de la Arquitectura
+
+**Conclusión:** La arquitectura actual (Flask + WeasyPrint + Jinja2) es **viable** para la generación de informes PDF corporativos.
+
+**Ventajas:**
+
+- ✅ Flexibilidad total en el diseño HTML/CSS
+- ✅ Fácil mantenimiento de plantillas
+- ✅ Soporte para imágenes dinámicas (logos, evidencias)
+- ✅ Generación de PDF de alta calidad
+
+**Consideraciones:**
+
+- Las imágenes deben convertirse a base64 para PDF
+- WeasyPrint requiere GTK instalado en Windows
+- El CSS debe ser compatible con el motor de renderizado de WeasyPrint
+
 ### Estado Actual
 
 La aplicación está funcional con:
@@ -349,6 +450,8 @@ La aplicación está funcional con:
 - ✅ Evidencias fotográficas por dispositivo
 - ✅ Texto de sección 2 según formato original
 - ✅ Formato de firmas finales según imagen de referencia
+- ✅ Logo de Netux cargando correctamente en PDF (base64)
+- ✅ Footer con formato corporativo (encabezados naranjas)
 
 ### Commits Realizados
 
@@ -356,3 +459,4 @@ La aplicación está funcional con:
 | --------- | ---------------------------------------------------------------------------------------------------------- |
 | `97c6bd2` | fix: Corregir superposición de footer y actualizar sección de evidencias                                   |
 | `089ab90` | fix: Actualizar color a naranja NETUX RGB(233,78,16), corregir texto sección 2 y formato de firmas finales |
+| `PENDING` | fix: Corregir logo roto en PDF usando base64, actualizar footer corporativo                                |
