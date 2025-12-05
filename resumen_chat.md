@@ -459,4 +459,4 @@ La aplicación está funcional con:
 | --------- | ---------------------------------------------------------------------------------------------------------- |
 | `97c6bd2` | fix: Corregir superposición de footer y actualizar sección de evidencias                                   |
 | `089ab90` | fix: Actualizar color a naranja NETUX RGB(233,78,16), corregir texto sección 2 y formato de firmas finales |
-| `PENDING` | fix: Corregir logo roto en PDF usando base64, actualizar footer corporativo                                |
+| `78e0789` | fix: Corregir logo roto en PDF usando base64 y actualizar footer corporativo                               |
