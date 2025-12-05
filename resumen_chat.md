@@ -251,6 +251,91 @@ Se identificaron y corrigieron los siguientes problemas:
 | `templates/informe_desempeno.html` | Agregado page-content wrapper, nueva sección de evidencias            |
 | `static/css/report.css`            | Corregido layout flexbox, colores corporativos, estilos de evidencias |
 
+### Correcciones Adicionales (05/12/2024 - Segunda Iteración)
+
+#### 1. Color Corporativo NETUX - Naranja
+
+**Problema:** Se estaba usando azul/verde en lugar del color naranja corporativo de NETUX.
+
+**Solución:** Se actualizaron las variables CSS con el color naranja correcto RGB(233, 78, 16):
+
+```css
+:root {
+  --primary-color: #e94e10; /* Naranja NETUX - RGB(233, 78, 16) */
+  --secondary-color: #e94e10; /* Naranja NETUX */
+  --accent-color: #e94e10; /* Naranja NETUX */
+  --border-color: #e94e10; /* Naranja NETUX */
+}
+```
+
+#### 2. Texto de la Sección 2
+
+**Problema:** El texto de la sección 2 no coincidía con el documento original.
+
+**Solución:** Se actualizó para mostrar exactamente:
+
+> "2. Segmentar el listado de variables bajo prueba y los contactos encargados de recibir las notificaciones (Vía mensaje SMS o Correo electrónico)."
+
+#### 3. Formato de Firmas Finales
+
+**Problema:** El formato de las firmas no coincidía con el diseño del documento original.
+
+**Solución:** Se implementó una tabla con el formato correcto:
+
+- Columna izquierda con fondo naranja para los roles (Realizó, Verificó, Aprobó)
+- Espacio para firma manuscrita
+- Nombre de la persona
+- Fecha con subrayado
+
+```css
+.final-signatures-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+}
+
+.signature-label-cell {
+  width: 120px;
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.signature-space {
+  height: 50px;
+  border-bottom: 1px solid #000;
+  margin: 10px 40px;
+}
+
+.signature-date-underline {
+  text-decoration: underline;
+}
+```
+
+**Estructura HTML de las firmas:**
+
+```html
+<table class="final-signatures-table">
+  <tr>
+    <td class="signature-label-cell" rowspan="2">Realizó</td>
+    <td class="signature-content-cell">
+      <div class="signature-space"></div>
+      <div class="signature-name">{{ datos.elaboro_nombre }}</div>
+    </td>
+  </tr>
+  <tr class="signature-date-row">
+    <td class="signature-date">
+      Fecha:
+      <span class="signature-date-underline"
+        >{{ datos.fecha_elaboracion }}</span
+      >
+    </td>
+  </tr>
+  <!-- Similar para Verificó y Aprobó -->
+</table>
+```
+
 ### Estado Actual
 
 La aplicación está funcional con:
@@ -260,5 +345,14 @@ La aplicación está funcional con:
 - ✅ Descarga en formato HTML
 - ✅ Descarga en formato PDF (requiere WeasyPrint)
 - ✅ Estructura de múltiples páginas sin superposición
-- ✅ Colores corporativos de NETUX
+- ✅ Color corporativo NETUX naranja RGB(233, 78, 16)
 - ✅ Evidencias fotográficas por dispositivo
+- ✅ Texto de sección 2 según formato original
+- ✅ Formato de firmas finales según imagen de referencia
+
+### Commits Realizados
+
+| Commit    | Descripción                                                                                                |
+| --------- | ---------------------------------------------------------------------------------------------------------- |
+| `97c6bd2` | fix: Corregir superposición de footer y actualizar sección de evidencias                                   |
+| `089ab90` | fix: Actualizar color a naranja NETUX RGB(233,78,16), corregir texto sección 2 y formato de firmas finales |
