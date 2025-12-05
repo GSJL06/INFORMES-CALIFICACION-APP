@@ -453,6 +453,133 @@ La aplicación está funcional con:
 - ✅ Logo de Netux cargando correctamente en PDF (base64)
 - ✅ Footer con formato corporativo (encabezados naranjas)
 
+### Correcciones Adicionales (05/12/2024 - Cuarta Iteración)
+
+#### Rediseño Completo del Encabezado Corporativo
+
+**Problema:** El formato generado presentaba múltiples inconsistencias visuales y estructurales respecto al formato corporativo "Informe_formato_actual".
+
+**Solución:** Se implementó un rediseño completo siguiendo las especificaciones del documento corporativo:
+
+##### 1. Estructura del Encabezado Unificado
+
+Se cambió de un diseño flexbox separado a una tabla unificada con 3 columnas:
+
+```html
+<header class="report-header">
+  <table class="header-table">
+    <tr>
+      <td class="header-logos"><!-- 30% - Logos --></td>
+      <td class="header-title"><!-- 45% - Título --></td>
+      <td class="header-metadata"><!-- 25% - Metadatos --></td>
+    </tr>
+    <tr>
+      <td colspan="3" class="header-proceso">
+        <strong>Proceso:</strong> Customer Success Manager
+      </td>
+    </tr>
+  </table>
+</header>
+```
+
+##### 2. Paleta de Colores Profesional
+
+Se cambió de colores naranjas a un diseño blanco/negro profesional (excepto logos):
+
+```css
+:root {
+  --primary-color: #000000;
+  --secondary-color: #333333;
+  --accent-color: #000000;
+  --border-color: #000000;
+  --light-bg: #ffffff;
+}
+```
+
+##### 3. Tipografía Profesional
+
+Se actualizó la fuente a una familia sans-serif profesional:
+
+```css
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+```
+
+##### 4. Formato de Fechas DD/MM/YYYY
+
+Se implementó una función para convertir fechas de formato ISO a formato latinoamericano:
+
+```python
+def format_date_ddmmyyyy(date_str):
+    """Convertir fecha de formato YYYY-MM-DD a DD/MM/YYYY"""
+    if not date_str:
+        return ''
+    try:
+        if '-' in date_str:
+            parts = date_str.split('-')
+            if len(parts) == 3:
+                return f"{parts[2]}/{parts[1]}/{parts[0]}"
+    except:
+        pass
+    return date_str
+```
+
+##### 5. Total de Páginas Configurable
+
+Se agregó un campo en el formulario para especificar el total de páginas del documento.
+
+##### 6. Integración de Línea de Proceso
+
+La línea "Proceso: Customer Success Manager" ahora está integrada dentro del encabezado principal, no como un elemento separado.
+
+##### 7. Reducción de Espaciado
+
+Se redujeron márgenes y padding para un diseño más compacto y profesional:
+
+```css
+:root {
+  --page-margin: 10mm;
+}
+
+.section {
+  margin-bottom: 12px;
+}
+
+.section-title {
+  padding: 6px 10px;
+}
+```
+
+### Archivos Modificados (Cuarta Iteración)
+
+| Archivo                            | Cambios                                                                                 |
+| ---------------------------------- | --------------------------------------------------------------------------------------- |
+| `app.py`                           | +20 líneas - Función format_date_ddmmyyyy(), campos de fecha formateados, total_paginas |
+| `templates/partials/header.html`   | Rediseño completo a estructura de tabla unificada                                       |
+| `templates/informe_desempeno.html` | Uso de include para header, eliminación de proceso-bar separados                        |
+| `templates/index.html`             | Nuevo campo para total de páginas                                                       |
+| `static/css/report.css`            | Paleta blanco/negro, tipografía Arial, estilos de tabla para header                     |
+
+### Estado Actual
+
+La aplicación está funcional con:
+
+- ✅ Formulario completo de entrada de datos
+- ✅ Vista previa del informe generado
+- ✅ Descarga en formato HTML
+- ✅ Descarga en formato PDF (requiere WeasyPrint)
+- ✅ Estructura de múltiples páginas sin superposición
+- ✅ Encabezado unificado con estructura de tabla (30% logos, 45% título, 25% metadatos)
+- ✅ Línea de proceso integrada en el encabezado
+- ✅ Paleta de colores blanco/negro profesional (excepto logos)
+- ✅ Tipografía Arial, Helvetica, sans-serif
+- ✅ Formato de fechas DD/MM/YYYY
+- ✅ Total de páginas configurable
+- ✅ Evidencias fotográficas por dispositivo
+- ✅ Logo de Netux cargando correctamente en PDF (base64)
+- ✅ Footer con formato corporativo
+
 ### Commits Realizados
 
 | Commit    | Descripción                                                                                                |
@@ -460,3 +587,4 @@ La aplicación está funcional con:
 | `97c6bd2` | fix: Corregir superposición de footer y actualizar sección de evidencias                                   |
 | `089ab90` | fix: Actualizar color a naranja NETUX RGB(233,78,16), corregir texto sección 2 y formato de firmas finales |
 | `78e0789` | fix: Corregir logo roto en PDF usando base64 y actualizar footer corporativo                               |
+| `1844c13` | fix: Rediseño completo del encabezado corporativo unificado                                                |
