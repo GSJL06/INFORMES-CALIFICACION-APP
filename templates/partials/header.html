@@ -1,0 +1,21 @@
+<header class="report-header">
+    <div class="header-left">
+        {% if datos.logo_cliente %}
+        <img src="{{ url_for('static', filename=datos.logo_cliente) }}" alt="Logo Cliente" class="logo-cliente">
+        {% endif %}
+        <img src="{{ url_for('static', filename='Netux_Logo.png') }}" alt="Netux" class="logo-netux">
+    </div>
+    <div class="header-center">
+        <h1>INFORME DE CALIFICACIÓN DE DESEMPEÑO</h1>
+        <h2>SISTEMA DE TELEMETRÍA</h2>
+    </div>
+    <div class="header-right">
+        <table class="metadata-table">
+            <tr><td><strong>Código:</strong></td><td>{{ datos.codigo }}</td></tr>
+            <tr><td><strong>Versión:</strong></td><td>{{ datos.version }}</td></tr>
+            <tr><td><strong>Vigencia:</strong></td><td>{{ datos.vigencia }}</td></tr>
+            <tr><td><strong>Página:</strong></td><td><span class="page-num"></span> de <span class="total-pages"></span></td></tr>
+        </table>
+    </div>
+</header>
+

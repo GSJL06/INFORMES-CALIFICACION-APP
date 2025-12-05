@@ -1,0 +1,425 @@
+{% extends 'base.html' %} {% block title %}Nuevo Informe - {{ app_name }}{%
+endblock %} {% block content %}
+<div class="form-container">
+  <div class="form-header">
+    <h1>📋 Generador de Informe de Calificación de Desempeño</h1>
+    <p>Sistema de Telemetría - Complete los campos para generar el informe</p>
+  </div>
+
+  <form
+    action="{{ url_for('generar_informe') }}"
+    method="POST"
+    enctype="multipart/form-data"
+    id="informeForm"
+  >
+    <!-- SECCIÓN: Metadatos del Documento -->
+    <div class="form-section">
+      <h2>📄 Metadatos del Documento</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="codigo">Código del documento</label>
+          <input
+            type="text"
+            id="codigo"
+            name="codigo"
+            value="NXOP-IN-03"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="version">Versión</label>
+          <input type="text" id="version" name="version" value="01" required />
+        </div>
+        <div class="form-group">
+          <label for="vigencia">Vigencia</label>
+          <input type="date" id="vigencia" name="vigencia" required />
+        </div>
+        <div class="form-group">
+          <label for="proceso">Proceso</label>
+          <input
+            type="text"
+            id="proceso"
+            name="proceso"
+            value="Customer Success Manager"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Información Principal -->
+    <div class="form-section">
+      <h2>🏥 Información Principal</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="titulo">Título del Sistema</label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            value="Sistema de telemetría Mi Monitor"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="numero_informe">Número de Informe</label>
+          <input
+            type="text"
+            id="numero_informe"
+            name="numero_informe"
+            placeholder="Ej: N° 3"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre_establecimiento">Nombre del Establecimiento</label>
+          <input
+            type="text"
+            id="nombre_establecimiento"
+            name="nombre_establecimiento"
+            placeholder="Ej: Hospital Pablo Tobón Uribe"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="direccion_establecimiento"
+            >Dirección del Establecimiento</label
+          >
+          <input
+            type="text"
+            id="direccion_establecimiento"
+            name="direccion_establecimiento"
+            placeholder="Ej: Calle 78 B # 69 - 240"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fecha_calificacion">Fecha de Calificación</label>
+          <input
+            type="date"
+            id="fecha_calificacion"
+            name="fecha_calificacion"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="logo_cliente">Logo del Cliente (opcional)</label>
+          <input
+            type="file"
+            id="logo_cliente"
+            name="logo_cliente"
+            accept="image/*"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Responsables NETUX -->
+    <div class="form-section">
+      <h2>👤 Responsables NETUX</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="elaboro_nombre">Elaboró - Nombre</label>
+          <input
+            type="text"
+            id="elaboro_nombre"
+            name="elaboro_nombre"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="elaboro_cargo">Elaboró - Cargo</label>
+          <input
+            type="text"
+            id="elaboro_cargo"
+            name="elaboro_cargo"
+            value="Customer Success Manager"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reviso_nombre">Revisó - Nombre</label>
+          <input type="text" id="reviso_nombre" name="reviso_nombre" required />
+        </div>
+        <div class="form-group">
+          <label for="reviso_cargo">Revisó - Cargo</label>
+          <input
+            type="text"
+            id="reviso_cargo"
+            name="reviso_cargo"
+            value="Director de operaciones"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Responsables Cliente -->
+    <div class="form-section">
+      <h2>🏢 Responsables del Cliente (Aprobación)</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="aprobo_nombre">Aprobó - Nombre</label>
+          <input type="text" id="aprobo_nombre" name="aprobo_nombre" required />
+        </div>
+        <div class="form-group">
+          <label for="aprobo_cargo">Aprobó - Cargo</label>
+          <input
+            type="text"
+            id="aprobo_cargo"
+            name="aprobo_cargo"
+            placeholder="Ej: Ingeniero Unidad de Mecánica"
+          />
+        </div>
+        <div class="form-group">
+          <label for="aprobo_entidad">Aprobó - Entidad</label>
+          <input
+            type="text"
+            id="aprobo_entidad"
+            name="aprobo_entidad"
+            placeholder="Nombre del Hospital/Empresa"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="fecha_elaboracion">Fecha de Elaboración del Informe</label>
+        <input
+          type="date"
+          id="fecha_elaboracion"
+          name="fecha_elaboracion"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Dispositivos -->
+    <div class="form-section">
+      <h2>🌡️ Dispositivos en Prueba</h2>
+      <p class="section-desc">
+        Agregue los dispositivos sometidos a prueba de desempeño con sus
+        capturas de pantalla de la plataforma Netux
+      </p>
+      <div id="dispositivos-container" class="dynamic-fields">
+        <div class="dynamic-item" data-index="0">
+          <button type="button" class="remove-btn" onclick="removeItem(this)">
+            ×
+          </button>
+          <div class="form-row">
+            <div class="form-group" style="flex: 2">
+              <label>Nombre/ID del Dispositivo</label>
+              <input
+                type="text"
+                name="dispositivo_nombre[]"
+                placeholder="Ej: PRF196 NEVERA MED. FAST TRACK-P2-TA"
+              />
+            </div>
+            <div class="form-group">
+              <label>Captura de pantalla (evidencia)</label>
+              <input
+                type="file"
+                name="dispositivo_evidencia[]"
+                accept="image/*"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="add-item-btn" onclick="addDispositivo()">
+        + Agregar Dispositivo
+      </button>
+    </div>
+
+    <!-- SECCIÓN: Contactos -->
+    <div class="form-section">
+      <h2>📞 Contactos de Notificación</h2>
+      <p class="section-desc">
+        Personal encargado de recibir las notificaciones de alarma
+      </p>
+      <div id="contactos-container" class="dynamic-fields">
+        <div class="dynamic-item" data-index="0">
+          <button type="button" class="remove-btn" onclick="removeItem(this)">
+            ×
+          </button>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre Responsable</label>
+              <input
+                type="text"
+                name="contacto_nombre[]"
+                placeholder="Nombre completo"
+              />
+            </div>
+            <div class="form-group">
+              <label>Teléfono</label>
+              <input
+                type="tel"
+                name="contacto_telefono[]"
+                placeholder="Ej: 3001234567"
+              />
+            </div>
+            <div class="form-group">
+              <label>Correo Electrónico</label>
+              <input
+                type="email"
+                name="contacto_correo[]"
+                placeholder="correo@ejemplo.com"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="add-item-btn" onclick="addContacto()">
+        + Agregar Contacto
+      </button>
+    </div>
+
+    <!-- SECCIÓN: Evidencias Fotográficas -->
+    <div class="form-section">
+      <h2>📸 Evidencias Fotográficas</h2>
+      <p class="section-desc">
+        Suba capturas de pantalla o fotos de las pruebas realizadas
+      </p>
+      <div class="form-group">
+        <label for="evidencias">Seleccionar imágenes (múltiples)</label>
+        <input
+          type="file"
+          id="evidencias"
+          name="evidencias[]"
+          accept="image/*"
+          multiple
+        />
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Resultados y Conclusiones -->
+    <div class="form-section">
+      <h2>📊 Resultados y Conclusiones</h2>
+      <div class="form-group">
+        <label for="resultados">Resultados de la Calificación</label>
+        <textarea
+          id="resultados"
+          name="resultados"
+          placeholder="Describa los resultados obtenidos durante la calificación de desempeño del sistema..."
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="conclusiones">Conclusiones</label>
+        <textarea
+          id="conclusiones"
+          name="conclusiones"
+          placeholder="Describa las conclusiones del informe de calificación..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- SECCIÓN: Desviaciones -->
+    <div class="form-section">
+      <h2>⚠️ Informe de Desviaciones</h2>
+      <div class="form-group">
+        <label for="desviaciones">Desviación(es)</label>
+        <textarea
+          id="desviaciones"
+          name="desviaciones"
+          placeholder="No se presentaron desviaciones"
+        >
+No se presentaron desviaciones</textarea
+        >
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="justificacion_desviacion"
+            >Justificación de la Aceptación</label
+          >
+          <input
+            type="text"
+            id="justificacion_desviacion"
+            name="justificacion_desviacion"
+            value="No aplica"
+          />
+        </div>
+        <div class="form-group">
+          <label for="impacto_desviacion">Impacto sobre la Operación</label>
+          <input
+            type="text"
+            id="impacto_desviacion"
+            name="impacto_desviacion"
+            value="No aplica"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary">
+        📄 Generar Vista Previa
+      </button>
+      <button type="reset" class="btn btn-secondary">
+        🔄 Limpiar Formulario
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  // Funciones para campos dinámicos
+  function addDispositivo() {
+    const container = document.getElementById("dispositivos-container");
+    const index = container.children.length;
+    const html = `
+        <div class="dynamic-item" data-index="${index}">
+            <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
+            <div class="form-row">
+                <div class="form-group" style="flex: 2;">
+                    <label>Nombre/ID del Dispositivo</label>
+                    <input type="text" name="dispositivo_nombre[]" placeholder="Ej: PRF196 NEVERA MED. FAST TRACK-P2-TA">
+                </div>
+                <div class="form-group">
+                    <label>Captura de pantalla (evidencia)</label>
+                    <input type="file" name="dispositivo_evidencia[]" accept="image/*">
+                </div>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML("beforeend", html);
+  }
+
+  function addContacto() {
+    const container = document.getElementById("contactos-container");
+    const index = container.children.length;
+    const html = `
+        <div class="dynamic-item" data-index="${index}">
+            <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nombre Responsable</label>
+                    <input type="text" name="contacto_nombre[]" placeholder="Nombre completo">
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" name="contacto_telefono[]" placeholder="Ej: 3001234567">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" name="contacto_correo[]" placeholder="correo@ejemplo.com">
+                </div>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML("beforeend", html);
+  }
+
+  function removeItem(btn) {
+    const item = btn.closest(".dynamic-item");
+    const container = item.parentElement;
+    if (container.children.length > 1) {
+      item.remove();
+    } else {
+      alert("Debe mantener al menos un elemento");
+    }
+  }
+</script>
+{% endblock %}

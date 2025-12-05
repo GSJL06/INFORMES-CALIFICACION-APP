@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Informe de Calificación de Desempeño - {{ datos.nombre_establecimiento }}
+    </title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/report.css') }}"
+    />
+    {% if preview_mode %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+    {% endif %}
+  </head>
+  <body>
+    {% if preview_mode %}
+    <!-- Barra de herramientas de vista previa -->
+    <div class="preview-toolbar no-print">
+      <div class="toolbar-content">
+        <span>📄 Vista Previa del Informe</span>
+        <div class="toolbar-actions">
+          <a
+            href="{{ url_for('descargar', formato='html') }}"
+            class="btn btn-secondary"
+            >⬇️ Descargar HTML</a
+          >
+          <a
+            href="{{ url_for('descargar', formato='pdf') }}"
+            class="btn btn-primary"
+            >📥 Descargar PDF</a
+          >
+          <a href="{{ url_for('index') }}" class="btn btn-secondary"
+            >✏️ Editar Datos</a
+          >
+          <button onclick="window.print()" class="btn btn-success">
+            🖨️ Imprimir
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="report-container">
+      <!-- ========== PÁGINA 1 ========== -->
+      <div class="page">
+        <!-- Encabezado -->
+        <header class="report-header">
+          <div class="header-left">
+            {% if datos.logo_cliente %}
+            <img
+              src="{{ url_for('static', filename=datos.logo_cliente) }}"
+              alt="Logo Cliente"
+              class="logo-cliente"
+            />
+            {% endif %}
+            <img
+              src="{{ url_for('static', filename='Netux_Logo.png') }}"
+              alt="Netux"
+              class="logo-netux"
+            />
+          </div>
+          <div class="header-center">
+            <h1>INFORME DE CALIFICACIÓN DE DESEMPEÑO</h1>
+            <h2>SISTEMA DE TELEMETRÍA</h2>
+          </div>
+          <div class="header-right">
+            <table class="metadata-table">
+              <tr>
+                <td><strong>Código:</strong></td>
+                <td>{{ datos.codigo }}</td>
+              </tr>
+              <tr>
+                <td><strong>Versión:</strong></td>
+                <td>{{ datos.version }}</td>
+              </tr>
+              <tr>
+                <td><strong>Vigencia:</strong></td>
+                <td>{{ datos.vigencia }}</td>
+              </tr>
+              <tr>
+                <td><strong>Página:</strong></td>
+                <td>
+                  <span class="page-num">1</span> de
+                  <span class="total-pages">X</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </header>
+
+        <!-- Proceso -->
+        <div class="proceso-bar">
+          <strong>Proceso:</strong> {{ datos.proceso }}
+        </div>
+
+        <div class="page-content">
+          <!-- INFORMACIÓN PRINCIPAL -->
+          <section class="section">
+            <h2 class="section-title">INFORMACIÓN PRINCIPAL</h2>
+            <table class="info-table">
+              <tr>
+                <td class="label-cell"><strong>Título:</strong></td>
+                <td>{{ datos.titulo }}</td>
+              </tr>
+              <tr>
+                <td class="label-cell">
+                  <strong>Nombre del establecimiento:</strong>
+                </td>
+                <td>{{ datos.nombre_establecimiento }}</td>
+              </tr>
+              <tr>
+                <td class="label-cell">
+                  <strong>Dirección del establecimiento:</strong>
+                </td>
+                <td>{{ datos.direccion_establecimiento }}</td>
+              </tr>
+              <tr>
+                <td class="label-cell">
+                  <strong>Informe de calificación:</strong>
+                </td>
+                <td>{{ datos.numero_informe }}</td>
+              </tr>
+              <tr>
+                <td class="label-cell"><strong>Fecha calificación:</strong></td>
+                <td>{{ datos.fecha_calificacion }}</td>
+              </tr>
+            </table>
+          </section>
+
+          <!-- OBJETIVO -->
+          <section class="section">
+            <h2 class="section-title">OBJETIVO</h2>
+            <p>
+              Demostrar que el sistema de telemetría del establecimiento
+              <strong>{{ datos.nombre_establecimiento }}</strong> opera según
+              las especificaciones establecidas, cumpliendo con los criterios de
+              aceptación definidos para el monitoreo de temperatura y la
+              generación de alarmas en tiempo real.
+            </p>
+          </section>
+
+          <!-- ALCANCE -->
+          <section class="section">
+            <h2 class="section-title">ALCANCE</h2>
+            <p>
+              Este informe de calificación de desempeño aplica al sistema de
+              telemetría <strong>{{ datos.titulo }}</strong> instalado en
+              <strong>{{ datos.nombre_establecimiento }}</strong>, ubicado en
+              <strong>{{ datos.direccion_establecimiento }}</strong>. La
+              calificación incluye la verificación de la transmisión de datos,
+              funcionamiento de alarmas y tiempos de respuesta de todos los
+              dispositivos sometidos a prueba.
+            </p>
+          </section>
+
+          <!-- RESPONSABILIDADES -->
+          <section class="section">
+            <h2 class="section-title">RESPONSABILIDADES</h2>
+            <ul class="responsibility-list">
+              <li>
+                <strong>Personal de Netux:</strong> Ejecutar las pruebas de
+                desempeño según el procedimiento establecido, documentar los
+                resultados y elaborar el informe de calificación.
+              </li>
+              <li>
+                <strong>Tecnólogo del Establecimiento:</strong> Proporcionar
+                acceso a los equipos y áreas necesarias, verificar las
+                condiciones operativas durante las pruebas.
+              </li>
+              <li>
+                <strong>Ingeniero Netux:</strong> Revisar y validar los
+                resultados de las pruebas, asegurar el cumplimiento de los
+                criterios de aceptación.
+              </li>
+              <li>
+                <strong>Ingeniero del Establecimiento:</strong> Aprobar el
+                informe de calificación y verificar que los resultados cumplan
+                con los requisitos del establecimiento.
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- Pie de página -->
+        {% include 'partials/footer_firmas.html' %}
+      </div>
+
+      <!-- ========== PÁGINA 2 ========== -->
+      <div class="page">
+        <header class="report-header">
+          <div class="header-left">
+            {% if datos.logo_cliente %}
+            <img
+              src="{{ url_for('static', filename=datos.logo_cliente) }}"
+              alt="Logo Cliente"
+              class="logo-cliente"
+            />
+            {% endif %}
+            <img
+              src="{{ url_for('static', filename='Netux_Logo.png') }}"
+              alt="Netux"
+              class="logo-netux"
+            />
+          </div>
+          <div class="header-center">
+            <h1>INFORME DE CALIFICACIÓN DE DESEMPEÑO</h1>
+            <h2>SISTEMA DE TELEMETRÍA</h2>
+          </div>
+          <div class="header-right">
+            <table class="metadata-table">
+              <tr>
+                <td><strong>Código:</strong></td>
+                <td>{{ datos.codigo }}</td>
+              </tr>
+              <tr>
+                <td><strong>Versión:</strong></td>
+                <td>{{ datos.version }}</td>
+              </tr>
+              <tr>
+                <td><strong>Vigencia:</strong></td>
+                <td>{{ datos.vigencia }}</td>
+              </tr>
+              <tr>
+                <td><strong>Página:</strong></td>
+                <td>
+                  <span class="page-num">2</span> de
+                  <span class="total-pages">X</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </header>
+
+        <div class="proceso-bar">
+          <strong>Proceso:</strong> {{ datos.proceso }}
+        </div>
+
+        <div class="page-content">
+          <!-- ELEMENTOS NECESARIOS -->
+          <section class="section">
+            <h2 class="section-title">ELEMENTOS NECESARIOS</h2>
+            <p>
+              <strong
+                >Materiales o suministros necesarios para efectuar la
+                calificación de desempeño:</strong
+              >
+            </p>
+            <ul class="bullet-list">
+              <li>Listado de usuario de Alarmas.</li>
+              <li>
+                Orden de servicio con número de equipos a ejecutar la prueba.
+              </li>
+              <li>Computador con acceso a internet.</li>
+              <li>Acceso a correo electrónico: micem@netuxtecnologia.com</li>
+            </ul>
+          </section>
+
+          <!-- PROCEDIMIENTO -->
+          <section class="section">
+            <h2 class="section-title">PROCEDIMIENTO</h2>
+            <ol class="procedure-list">
+              <li>Ejecutar el procedimiento normal de las alarmas.</li>
+              <li>
+                Adjuntar todos los formularios que se usan en el procedimiento,
+                incluyendo la numeración.
+              </li>
+              <li>Completar el formulario resumen del procedimiento.</li>
+              <li>Realizar lista de verificación de los resultados.</li>
+              <li>
+                Adjuntar los resultados del procedimiento, datos de operación y
+                los cálculos.
+              </li>
+            </ol>
+          </section>
+        </div>
+
+        {% include 'partials/footer_firmas.html' %}
+      </div>
+
+      <!-- ========== PÁGINA 3: LISTA DE VERIFICACIÓN 1 ========== -->
+      <div class="page">
+        {% include 'partials/header.html' %}
+        <div class="proceso-bar">
+          <strong>Proceso:</strong> {{ datos.proceso }}
+        </div>
+
+        <div class="page-content">
+          <section class="section">
+            <h2 class="section-title">LISTA DE VERIFICACIÓN 1</h2>
+            <p>
+              Registro de resumen de datos (a ser preparado para el
+              procedimiento específico sometido a prueba)
+            </p>
+
+            <table class="verification-table">
+              <thead>
+                <tr>
+                  <th>Ítem</th>
+                  <th>Actividad</th>
+                  <th>Observación</th>
+                  <th colspan="2">Ítem Cumplido</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th>SI</th>
+                  <th>NO</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    Verificar la correcta transmisión y funcionalidad de las
+                    variables sometidas bajo prueba.
+                  </td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>
+                    Segmentar el listado de variables bajo prueba y los
+                    contactos de notificación.
+                  </td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>
+                    Verificar dentro del motor de alarmas los registros de
+                    configuración.
+                  </td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>
+                    Ajustar los parámetros para generar excursión de prueba.
+                  </td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Registrar el primer dato en excursión.</td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Ejecutar la prueba durante mínimo 5 minutos.</td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>Restablecer los parámetros de configuración.</td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>
+                    Verificar la transmisión y normalización de las lecturas.
+                  </td>
+                  <td>Sin novedad</td>
+                  <td class="check-cell">X</td>
+                  <td class="check-cell"></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+        {% include 'partials/footer_firmas.html' %}
+      </div>
+
+      <!-- ========== PÁGINA 4: EVIDENCIAS DISPOSITIVOS ========== -->
+      <div class="page">
+        {% include 'partials/header.html' %}
+        <div class="proceso-bar">
+          <strong>Proceso:</strong> {{ datos.proceso }}
+        </div>
+
+        <div class="page-content">
+          <section class="section">
+            <h2 class="section-title">
+              Evidencias fotográficas de las actividades realizadas
+            </h2>
+            <h3 class="subsection-title">
+              1. Verificar la correcta transmisión y funcionalidad de las
+              variables sometidas bajo prueba en la plataforma de monitoreo de
+              telemetría.
+            </h3>
+
+            {% if datos.dispositivos %} {% for dispositivo in datos.dispositivos
+            %}
+            <div class="device-evidence-block">
+              <h4 class="device-title">{{ dispositivo.nombre }}</h4>
+              {% if dispositivo.evidencia %}
+              <div class="device-evidence-image">
+                <img
+                  src="{{ url_for('static', filename=dispositivo.evidencia) }}"
+                  alt="Evidencia {{ dispositivo.nombre }}"
+                />
+              </div>
+              {% else %}
+              <div class="device-evidence-placeholder">
+                <p>
+                  Captura de pantalla de la plataforma Netux para este
+                  dispositivo
+                </p>
+              </div>
+              {% endif %}
+            </div>
+            {% endfor %} {% endif %} {% if datos.evidencias %}
+            <div class="evidencias-generales">
+              {% for evidencia in datos.evidencias %}
+              <div class="evidencia-item">
+                <img
+                  src="{{ url_for('static', filename=evidencia) }}"
+                  alt="Evidencia"
+                />
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </section>
+        </div>
+        {% include 'partials/footer_firmas.html' %}
+      </div>
+
+      <!-- ========== PÁGINA 5: CONTACTOS ========== -->
+      <div class="page">
+        {% include 'partials/header.html' %}
+        <div class="proceso-bar">
+          <strong>Proceso:</strong> {{ datos.proceso }}
+        </div>
+
+        <div class="page-content">
+          <section class="section">
+            <h3 class="subsection-title">
+              2. Listado de dispositivos y contactos de notificación
+            </h3>
+
+            <h4>Listado de dispositivos en prueba:</h4>
+            {% if datos.dispositivos %}
+            <ul class="device-list">
+              {% for dispositivo in datos.dispositivos %}
+              <li>{{ dispositivo.nombre }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+            <h4>Contactos de notificación:</h4>
+            {% if datos.contactos %}
+            <table class="contacts-table">
+              <thead>
+                <tr>
+                  <th>Nombre responsable</th>
+                  <th>Teléfono</th>
+                  <th>Correo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for contacto in datos.contactos %}
+                <tr>
+                  <td>{{ contacto.nombre }}</td>
+                  <td>{{ contacto.telefono }}</td>
+                  <td>{{ contacto.correo }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% endif %}
+          </section>
+        </div>
+        {% include 'partials/footer_firmas.html' %}
+      </div>
+
+      <!-- ========== PÁGINA FINAL: RESULTADOS Y CONCLUSIONES ========== -->
+      <div class="page">
+        {% include 'partials/header.html' %}
+        <div class="proceso-bar">
+          <strong>Proceso:</strong> {{ datos.proceso }}
+        </div>
+
+        <div class="page-content">
+          <!-- INFORME DE DESVIACIONES -->
+          <section class="section">
+            <h2 class="section-title">INFORME DE DESVIACIONES</h2>
+            <table class="deviations-table">
+              <tr>
+                <td class="label-cell"><strong>Desviación(es):</strong></td>
+                <td>{{ datos.desviaciones }}</td>
+              </tr>
+              <tr>
+                <td class="label-cell">
+                  <strong>Justificación de la aceptación:</strong>
+                </td>
+                <td>{{ datos.justificacion_desviacion }}</td>
+              </tr>
+              <tr>
+                <td class="label-cell">
+                  <strong>Impacto sobre la operación:</strong>
+                </td>
+                <td>{{ datos.impacto_desviacion }}</td>
+              </tr>
+            </table>
+          </section>
+
+          <!-- RESULTADOS Y CONCLUSIONES -->
+          <section class="section">
+            <h2 class="section-title">
+              INFORME DE CALIFICACIÓN DE ESPECIFICACIONES FUNCIONALES
+            </h2>
+
+            <h3>Resultados:</h3>
+            <div class="text-block">
+              {{ datos.resultados|default('Los resultados de la calificación de
+              desempeño demuestran que el sistema de telemetría opera según las
+              especificaciones establecidas.', true) }}
+            </div>
+
+            <h3>Conclusiones:</h3>
+            <div class="text-block">
+              {{ datos.conclusiones|default('El sistema de telemetría cumple con
+              todos los criterios de aceptación establecidos para la
+              calificación de desempeño.', true) }}
+            </div>
+          </section>
+
+          <!-- BLOQUE DE FIRMAS FINAL -->
+          <section class="section signatures-section">
+            <h2 class="section-title">FIRMAS DE APROBACIÓN</h2>
+            <table class="signatures-table">
+              <tr>
+                <td class="signature-cell">
+                  <div class="signature-line"></div>
+                  <strong>Realizó</strong><br />
+                  {{ datos.elaboro_nombre }}<br />
+                  <small>{{ datos.elaboro_cargo }}</small><br />
+                  <small>NETUX SAS</small><br />
+                  <small>Fecha: {{ datos.fecha_elaboracion }}</small>
+                </td>
+                <td class="signature-cell">
+                  <div class="signature-line"></div>
+                  <strong>Verificó</strong><br />
+                  {{ datos.reviso_nombre }}<br />
+                  <small>{{ datos.reviso_cargo }}</small><br />
+                  <small>NETUX SAS</small><br />
+                  <small>Fecha: {{ datos.fecha_elaboracion }}</small>
+                </td>
+                <td class="signature-cell">
+                  <div class="signature-line"></div>
+                  <strong>Aprobó</strong><br />
+                  {{ datos.aprobo_nombre }}<br />
+                  <small>{{ datos.aprobo_cargo }}</small><br />
+                  <small>{{ datos.aprobo_entidad }}</small><br />
+                  <small>Fecha: {{ datos.fecha_elaboracion }}</small>
+                </td>
+              </tr>
+            </table>
+          </section>
+        </div>
+
+        {% include 'partials/footer_firmas.html' %}
+      </div>
+    </div>
+    <!-- fin report-container -->
+  </body>
+</html>
