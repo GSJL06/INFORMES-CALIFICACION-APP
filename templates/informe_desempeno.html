@@ -328,7 +328,8 @@
                   <td>2</td>
                   <td>
                     Segmentar el listado de variables bajo prueba y los
-                    contactos de notificación.
+                    contactos encargados de recibir las notificaciones (Vía
+                    mensaje SMS o Correo electrónico).
                   </td>
                   <td>Sin novedad</td>
                   <td class="check-cell">X</td>
@@ -455,7 +456,9 @@
         <div class="page-content">
           <section class="section">
             <h3 class="subsection-title">
-              2. Listado de dispositivos y contactos de notificación
+              2. Segmentar el listado de variables bajo prueba y los contactos
+              encargados de recibir las notificaciones (Vía mensaje SMS o Correo
+              electrónico).
             </h3>
 
             <h4>Listado de dispositivos en prueba:</h4>
@@ -545,34 +548,55 @@
             </div>
           </section>
 
-          <!-- BLOQUE DE FIRMAS FINAL -->
+          <!-- BLOQUE DE FIRMAS FINAL (Formato según imagen) -->
           <section class="section signatures-section">
-            <h2 class="section-title">FIRMAS DE APROBACIÓN</h2>
-            <table class="signatures-table">
+            <table class="final-signatures-table">
+              <!-- REALIZÓ -->
               <tr>
-                <td class="signature-cell">
-                  <div class="signature-line"></div>
-                  <strong>Realizó</strong><br />
-                  {{ datos.elaboro_nombre }}<br />
-                  <small>{{ datos.elaboro_cargo }}</small><br />
-                  <small>NETUX SAS</small><br />
-                  <small>Fecha: {{ datos.fecha_elaboracion }}</small>
+                <td class="signature-label-cell" rowspan="2">Realizó</td>
+                <td class="signature-content-cell">
+                  <div class="signature-space"></div>
+                  <div class="signature-name">{{ datos.elaboro_nombre }}</div>
                 </td>
-                <td class="signature-cell">
-                  <div class="signature-line"></div>
-                  <strong>Verificó</strong><br />
-                  {{ datos.reviso_nombre }}<br />
-                  <small>{{ datos.reviso_cargo }}</small><br />
-                  <small>NETUX SAS</small><br />
-                  <small>Fecha: {{ datos.fecha_elaboracion }}</small>
+              </tr>
+              <tr class="signature-date-row">
+                <td class="signature-date">
+                  Fecha:
+                  <span class="signature-date-underline"
+                    >{{ datos.fecha_elaboracion }}</span
+                  >
                 </td>
-                <td class="signature-cell">
-                  <div class="signature-line"></div>
-                  <strong>Aprobó</strong><br />
-                  {{ datos.aprobo_nombre }}<br />
-                  <small>{{ datos.aprobo_cargo }}</small><br />
-                  <small>{{ datos.aprobo_entidad }}</small><br />
-                  <small>Fecha: {{ datos.fecha_elaboracion }}</small>
+              </tr>
+              <!-- VERIFICÓ -->
+              <tr>
+                <td class="signature-label-cell" rowspan="2">Verificó</td>
+                <td class="signature-content-cell">
+                  <div class="signature-space"></div>
+                  <div class="signature-name">{{ datos.reviso_nombre }}</div>
+                </td>
+              </tr>
+              <tr class="signature-date-row">
+                <td class="signature-date">
+                  Fecha:
+                  <span class="signature-date-underline"
+                    >{{ datos.fecha_elaboracion }}</span
+                  >
+                </td>
+              </tr>
+              <!-- APROBÓ -->
+              <tr>
+                <td class="signature-label-cell" rowspan="2">Aprobó</td>
+                <td class="signature-content-cell">
+                  <div class="signature-space"></div>
+                  <div class="signature-name">{{ datos.aprobo_nombre }}</div>
+                </td>
+              </tr>
+              <tr class="signature-date-row">
+                <td class="signature-date">
+                  Fecha:
+                  <span class="signature-date-underline"
+                    >{{ datos.fecha_elaboracion }}</span
+                  >
                 </td>
               </tr>
             </table>
