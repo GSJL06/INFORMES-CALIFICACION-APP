@@ -48,68 +48,8 @@
     <div class="report-container">
       <!-- ========== PÁGINA 1 ========== -->
       <div class="page">
-        <!-- Encabezado -->
-        <header class="report-header">
-          <div class="header-left">
-            {% if pdf_mode and datos.logo_cliente_base64 %}
-            <img
-              src="{{ datos.logo_cliente_base64 }}"
-              alt="Logo Cliente"
-              class="logo-cliente"
-            />
-            {% elif datos.logo_cliente %}
-            <img
-              src="{{ url_for('static', filename=datos.logo_cliente) }}"
-              alt="Logo Cliente"
-              class="logo-cliente"
-            />
-            {% endif %} {% if pdf_mode and datos.netux_logo_base64 %}
-            <img
-              src="{{ datos.netux_logo_base64 }}"
-              alt="Netux"
-              class="logo-netux"
-            />
-            {% else %}
-            <img
-              src="{{ url_for('static', filename='Netux_Logo.png') }}"
-              alt="Netux"
-              class="logo-netux"
-            />
-            {% endif %}
-          </div>
-          <div class="header-center">
-            <h1>INFORME DE CALIFICACIÓN DE DESEMPEÑO</h1>
-            <h2>SISTEMA DE TELEMETRÍA</h2>
-          </div>
-          <div class="header-right">
-            <table class="metadata-table">
-              <tr>
-                <td><strong>Código:</strong></td>
-                <td>{{ datos.codigo }}</td>
-              </tr>
-              <tr>
-                <td><strong>Versión:</strong></td>
-                <td>{{ datos.version }}</td>
-              </tr>
-              <tr>
-                <td><strong>Vigencia:</strong></td>
-                <td>{{ datos.vigencia }}</td>
-              </tr>
-              <tr>
-                <td><strong>Página:</strong></td>
-                <td>
-                  <span class="page-num">1</span> de
-                  <span class="total-pages">X</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </header>
-
-        <!-- Proceso -->
-        <div class="proceso-bar">
-          <strong>Proceso:</strong> {{ datos.proceso }}
-        </div>
+        <!-- Encabezado Unificado -->
+        {% include 'partials/header.html' %}
 
         <div class="page-content">
           <!-- INFORMACIÓN PRINCIPAL -->
@@ -117,30 +57,28 @@
             <h2 class="section-title">INFORMACIÓN PRINCIPAL</h2>
             <table class="info-table">
               <tr>
-                <td class="label-cell"><strong>Título:</strong></td>
+                <td class="label-cell">Título:</td>
                 <td>{{ datos.titulo }}</td>
               </tr>
               <tr>
-                <td class="label-cell">
-                  <strong>Nombre del establecimiento:</strong>
-                </td>
+                <td class="label-cell">Nombre del establecimiento:</td>
                 <td>{{ datos.nombre_establecimiento }}</td>
               </tr>
               <tr>
-                <td class="label-cell">
-                  <strong>Dirección del establecimiento:</strong>
-                </td>
+                <td class="label-cell">Dirección del establecimiento:</td>
                 <td>{{ datos.direccion_establecimiento }}</td>
               </tr>
               <tr>
-                <td class="label-cell">
-                  <strong>Informe de calificación:</strong>
-                </td>
+                <td class="label-cell">Informe de calificación:</td>
                 <td>{{ datos.numero_informe }}</td>
               </tr>
               <tr>
-                <td class="label-cell"><strong>Fecha calificación:</strong></td>
-                <td>{{ datos.fecha_calificacion }}</td>
+                <td class="label-cell">Fecha calificación:</td>
+                <td>
+                  {{
+                  datos.fecha_calificacion_formato|default(datos.fecha_calificacion)
+                  }}
+                </td>
               </tr>
             </table>
           </section>
@@ -205,53 +143,7 @@
 
       <!-- ========== PÁGINA 2 ========== -->
       <div class="page">
-        <header class="report-header">
-          <div class="header-left">
-            {% if datos.logo_cliente %}
-            <img
-              src="{{ url_for('static', filename=datos.logo_cliente) }}"
-              alt="Logo Cliente"
-              class="logo-cliente"
-            />
-            {% endif %}
-            <img
-              src="{{ url_for('static', filename='Netux_Logo.png') }}"
-              alt="Netux"
-              class="logo-netux"
-            />
-          </div>
-          <div class="header-center">
-            <h1>INFORME DE CALIFICACIÓN DE DESEMPEÑO</h1>
-            <h2>SISTEMA DE TELEMETRÍA</h2>
-          </div>
-          <div class="header-right">
-            <table class="metadata-table">
-              <tr>
-                <td><strong>Código:</strong></td>
-                <td>{{ datos.codigo }}</td>
-              </tr>
-              <tr>
-                <td><strong>Versión:</strong></td>
-                <td>{{ datos.version }}</td>
-              </tr>
-              <tr>
-                <td><strong>Vigencia:</strong></td>
-                <td>{{ datos.vigencia }}</td>
-              </tr>
-              <tr>
-                <td><strong>Página:</strong></td>
-                <td>
-                  <span class="page-num">2</span> de
-                  <span class="total-pages">X</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </header>
-
-        <div class="proceso-bar">
-          <strong>Proceso:</strong> {{ datos.proceso }}
-        </div>
+        {% include 'partials/header.html' %}
 
         <div class="page-content">
           <!-- ELEMENTOS NECESARIOS -->
@@ -298,9 +190,6 @@
       <!-- ========== PÁGINA 3: LISTA DE VERIFICACIÓN 1 ========== -->
       <div class="page">
         {% include 'partials/header.html' %}
-        <div class="proceso-bar">
-          <strong>Proceso:</strong> {{ datos.proceso }}
-        </div>
 
         <div class="page-content">
           <section class="section">
@@ -407,9 +296,6 @@
       <!-- ========== PÁGINA 4: EVIDENCIAS DISPOSITIVOS ========== -->
       <div class="page">
         {% include 'partials/header.html' %}
-        <div class="proceso-bar">
-          <strong>Proceso:</strong> {{ datos.proceso }}
-        </div>
 
         <div class="page-content">
           <section class="section">
@@ -478,9 +364,6 @@
       <!-- ========== PÁGINA 5: CONTACTOS ========== -->
       <div class="page">
         {% include 'partials/header.html' %}
-        <div class="proceso-bar">
-          <strong>Proceso:</strong> {{ datos.proceso }}
-        </div>
 
         <div class="page-content">
           <section class="section">
@@ -528,9 +411,6 @@
       <!-- ========== PÁGINA FINAL: RESULTADOS Y CONCLUSIONES ========== -->
       <div class="page">
         {% include 'partials/header.html' %}
-        <div class="proceso-bar">
-          <strong>Proceso:</strong> {{ datos.proceso }}
-        </div>
 
         <div class="page-content">
           <!-- INFORME DE DESVIACIONES -->

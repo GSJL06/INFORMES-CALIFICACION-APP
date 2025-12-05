@@ -67,16 +67,36 @@ def index():
     return render_template('index.html')
 
 
+def format_date_ddmmyyyy(date_str):
+    """Convertir fecha de formato YYYY-MM-DD a DD/MM/YYYY"""
+    if not date_str:
+        return ''
+    try:
+        if '-' in date_str:
+            parts = date_str.split('-')
+            if len(parts) == 3:
+                return f"{parts[2]}/{parts[1]}/{parts[0]}"
+    except:
+        pass
+    return date_str
+
+
 @app.route('/generar', methods=['POST'])
 def generar_informe():
     """Procesar formulario y generar informe"""
     try:
+        # Obtener fechas y convertirlas a formato DD/MM/YYYY
+        vigencia_raw = request.form.get('vigencia', '')
+        fecha_calificacion_raw = request.form.get('fecha_calificacion', '')
+        fecha_elaboracion_raw = request.form.get('fecha_elaboracion', '')
+
         # Recopilar datos del formulario
         datos = {
             # Metadatos del documento
             'codigo': request.form.get('codigo', 'NXOP-IN-03'),
             'version': request.form.get('version', '01'),
-            'vigencia': request.form.get('vigencia', ''),
+            'vigencia': vigencia_raw,
+            'vigencia_formato': format_date_ddmmyyyy(vigencia_raw),
             'proceso': request.form.get('proceso', 'Customer Success Manager'),
 
             # Información principal
@@ -84,7 +104,8 @@ def generar_informe():
             'nombre_establecimiento': request.form.get('nombre_establecimiento', ''),
             'direccion_establecimiento': request.form.get('direccion_establecimiento', ''),
             'numero_informe': request.form.get('numero_informe', ''),
-            'fecha_calificacion': request.form.get('fecha_calificacion', ''),
+            'fecha_calificacion': fecha_calificacion_raw,
+            'fecha_calificacion_formato': format_date_ddmmyyyy(fecha_calificacion_raw),
 
             # Responsables Netux
             'elaboro_nombre': request.form.get('elaboro_nombre', ''),
@@ -98,7 +119,8 @@ def generar_informe():
             'aprobo_entidad': request.form.get('aprobo_entidad', ''),
 
             # Fecha elaboración
-            'fecha_elaboracion': request.form.get('fecha_elaboracion', ''),
+            'fecha_elaboracion': fecha_elaboracion_raw,
+            'fecha_elaboracion_formato': format_date_ddmmyyyy(fecha_elaboracion_raw),
 
             # Resultados y conclusiones
             'resultados': request.form.get('resultados', ''),
@@ -108,6 +130,9 @@ def generar_informe():
             'desviaciones': request.form.get('desviaciones', 'No se presentaron desviaciones'),
             'justificacion_desviacion': request.form.get('justificacion_desviacion', 'No aplica'),
             'impacto_desviacion': request.form.get('impacto_desviacion', 'No aplica'),
+
+            # Total de páginas (estimación base, se puede ajustar)
+            'total_paginas': request.form.get('total_paginas', '10'),
         }
 
         # Procesar dispositivos (múltiples) con evidencias
