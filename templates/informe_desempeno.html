@@ -52,35 +52,39 @@
         {% include 'partials/header.html' %}
 
         <div class="page-content">
-          <!-- INFORMACIÓN PRINCIPAL -->
+          <!-- INFORMACIÓN PRINCIPAL - Formato sin tabla, etiquetas y valores -->
           <section class="section">
             <h2 class="section-title">INFORMACIÓN PRINCIPAL</h2>
-            <table class="info-table">
-              <tr>
-                <td class="label-cell">Título:</td>
-                <td>{{ datos.titulo }}</td>
-              </tr>
-              <tr>
-                <td class="label-cell">Nombre del establecimiento:</td>
-                <td>{{ datos.nombre_establecimiento }}</td>
-              </tr>
-              <tr>
-                <td class="label-cell">Dirección del establecimiento:</td>
-                <td>{{ datos.direccion_establecimiento }}</td>
-              </tr>
-              <tr>
-                <td class="label-cell">Informe de calificación:</td>
-                <td>{{ datos.numero_informe }}</td>
-              </tr>
-              <tr>
-                <td class="label-cell">Fecha calificación:</td>
-                <td>
-                  {{
+            <div class="info-principal">
+              <div class="info-row">
+                <span class="info-label">Título:</span>
+                <span class="info-value">{{ datos.titulo }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Nombre del establecimiento:</span>
+                <span class="info-value"
+                  >{{ datos.nombre_establecimiento }}</span
+                >
+              </div>
+              <div class="info-row">
+                <span class="info-label">Dirección del establecimiento:</span>
+                <span class="info-value"
+                  >{{ datos.direccion_establecimiento }}</span
+                >
+              </div>
+              <div class="info-row">
+                <span class="info-label">Informe de calificación:</span>
+                <span class="info-value">{{ datos.numero_informe }}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Fecha calificación:</span>
+                <span class="info-value"
+                  >{{
                   datos.fecha_calificacion_formato|default(datos.fecha_calificacion)
-                  }}
-                </td>
-              </tr>
-            </table>
+                  }}</span
+                >
+              </div>
+            </div>
           </section>
 
           <!-- OBJETIVO -->
@@ -134,6 +138,37 @@
                 con los requisitos del establecimiento.
               </li>
             </ul>
+
+            <!-- Tabla de responsabilidades con encabezado naranja -->
+            <table class="responsibilities-table">
+              <tr>
+                <th>Elaboró</th>
+                <th>Revisó</th>
+                <th>Aprobó</th>
+              </tr>
+              <tr>
+                <td>
+                  {{ datos.elaboro_nombre }}<br />
+                  <span class="cargo">{{ datos.elaboro_cargo }}</span><br />
+                  NETUX SAS
+                </td>
+                <td>
+                  {{ datos.reviso_nombre }}<br />
+                  <span class="cargo">{{ datos.reviso_cargo }}</span><br />
+                  NETUX SAS
+                </td>
+                <td>
+                  {{ datos.aprobo_nombre }}<br />
+                  <span class="cargo">{{ datos.aprobo_cargo }}</span><br />
+                  {{ datos.nombre_establecimiento }}
+                </td>
+              </tr>
+            </table>
+            <p class="fecha-elaboracion-informe">
+              Fecha elaboración informe: {{
+              datos.fecha_elaboracion_formato|default(datos.fecha_elaboracion)
+              }}
+            </p>
           </section>
         </div>
 
@@ -457,58 +492,37 @@
             </div>
           </section>
 
-          <!-- BLOQUE DE FIRMAS FINAL (Formato según imagen) -->
+          <!-- BLOQUE DE FIRMAS FINAL - Tabla con encabezado naranja -->
           <section class="section signatures-section">
-            <table class="final-signatures-table">
-              <!-- REALIZÓ -->
+            <table class="responsibilities-table">
               <tr>
-                <td class="signature-label-cell" rowspan="2">Realizó</td>
-                <td class="signature-content-cell">
-                  <div class="signature-space"></div>
-                  <div class="signature-name">{{ datos.elaboro_nombre }}</div>
-                </td>
+                <th>Elaboró</th>
+                <th>Revisó</th>
+                <th>Aprobó</th>
               </tr>
-              <tr class="signature-date-row">
-                <td class="signature-date">
-                  Fecha:
-                  <span class="signature-date-underline"
-                    >{{ datos.fecha_elaboracion }}</span
-                  >
-                </td>
-              </tr>
-              <!-- VERIFICÓ -->
               <tr>
-                <td class="signature-label-cell" rowspan="2">Verificó</td>
-                <td class="signature-content-cell">
-                  <div class="signature-space"></div>
-                  <div class="signature-name">{{ datos.reviso_nombre }}</div>
+                <td>
+                  {{ datos.elaboro_nombre }}<br />
+                  <span class="cargo">{{ datos.elaboro_cargo }}</span><br />
+                  NETUX SAS
                 </td>
-              </tr>
-              <tr class="signature-date-row">
-                <td class="signature-date">
-                  Fecha:
-                  <span class="signature-date-underline"
-                    >{{ datos.fecha_elaboracion }}</span
-                  >
+                <td>
+                  {{ datos.reviso_nombre }}<br />
+                  <span class="cargo">{{ datos.reviso_cargo }}</span><br />
+                  NETUX SAS
                 </td>
-              </tr>
-              <!-- APROBÓ -->
-              <tr>
-                <td class="signature-label-cell" rowspan="2">Aprobó</td>
-                <td class="signature-content-cell">
-                  <div class="signature-space"></div>
-                  <div class="signature-name">{{ datos.aprobo_nombre }}</div>
-                </td>
-              </tr>
-              <tr class="signature-date-row">
-                <td class="signature-date">
-                  Fecha:
-                  <span class="signature-date-underline"
-                    >{{ datos.fecha_elaboracion }}</span
-                  >
+                <td>
+                  {{ datos.aprobo_nombre }}<br />
+                  <span class="cargo">{{ datos.aprobo_cargo }}</span><br />
+                  {{ datos.nombre_establecimiento }}
                 </td>
               </tr>
             </table>
+            <p class="fecha-elaboracion-informe">
+              Fecha elaboración informe: {{
+              datos.fecha_elaboracion_formato|default(datos.fecha_elaboracion)
+              }}
+            </p>
           </section>
         </div>
 

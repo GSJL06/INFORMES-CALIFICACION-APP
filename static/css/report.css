@@ -7,13 +7,14 @@
 /* Variables - Colores corporativos */
 :root {
   --primary-color: #000000; /* Negro para bordes y texto */
+  --netux-orange: #e94e10; /* Naranja corporativo RGB(233, 78, 16) - SOLO para encabezados de tablas de responsabilidades */
   --text-color: #000000;
   --border-color: #000000;
   --light-bg: #ffffff;
   --white: #ffffff;
   --page-width: 210mm;
   --page-height: 297mm;
-  --page-margin: 10mm;
+  --page-margin: 15mm;
 }
 
 /* Reset básico */
@@ -81,18 +82,18 @@ body {
 }
 
 .logo-cliente {
-  width: 100%;
-  max-width: 150px;
-  max-height: 60px;
+  width: 80%;
+  max-width: 140px;
+  max-height: 55px;
   object-fit: contain;
   display: block;
-  margin: 0 auto 8px auto;
+  margin: 0 auto 10px auto;
 }
 
 .logo-netux {
-  width: 100%;
-  max-width: 150px;
-  max-height: 50px;
+  width: 80%;
+  max-width: 140px;
+  max-height: 55px;
   object-fit: contain;
   display: block;
   margin: 0 auto;
@@ -159,10 +160,15 @@ body {
 .section-title {
   font-size: 12pt;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  margin-top: 15px;
   color: #000;
-  border-bottom: 1px solid #000;
+  text-decoration: underline;
   padding-bottom: 3px;
+}
+
+.section:first-child .section-title {
+  margin-top: 10px;
 }
 
 .subsection-title {
@@ -174,7 +180,28 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
-/* Tablas de información */
+/* ========== INFORMACIÓN PRINCIPAL - SIN BORDES ========== */
+.info-principal {
+  line-height: 1.8;
+  font-size: 11pt;
+  margin-bottom: 15px;
+}
+
+.info-row {
+  margin-bottom: 5px;
+}
+
+.info-label {
+  font-weight: bold;
+  display: inline-block;
+  width: 280px;
+}
+
+.info-value {
+  display: inline;
+}
+
+/* Tablas de información CON bordes (para otras secciones) */
 .info-table {
   width: 100%;
   border-collapse: collapse;
@@ -188,7 +215,7 @@ body {
 
 .info-table .label-cell {
   background: white;
-  width: 180px;
+  width: 220px;
   font-weight: bold;
 }
 
@@ -358,7 +385,43 @@ body {
   text-align: justify;
 }
 
-/* ========== FIRMAS FINALES ========== */
+/* ========== TABLA DE RESPONSABILIDADES (con encabezado naranja) ========== */
+.responsibilities-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 11pt;
+}
+
+.responsibilities-table th {
+  background-color: var(--netux-orange);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #000;
+}
+
+.responsibilities-table td {
+  background-color: white;
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #000;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.responsibilities-table .cargo {
+  font-weight: bold;
+}
+
+.fecha-elaboracion-informe {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 11pt;
+}
+
+/* ========== FIRMAS FINALES (página final) ========== */
 .signatures-section {
   margin-top: 20px;
 }
@@ -377,8 +440,8 @@ body {
 
 .signature-label-cell {
   width: 100px;
-  background-color: #f0f0f0;
-  color: #000;
+  background-color: var(--netux-orange);
+  color: white;
   font-weight: bold;
   text-align: center;
   font-size: 10pt;
@@ -434,11 +497,11 @@ body {
 }
 
 .footer-label {
-  background-color: #f0f0f0;
-  color: #000;
+  background-color: var(--netux-orange);
+  color: white;
   font-weight: bold;
   font-size: 9pt;
-  padding: 4px 6px;
+  padding: 6px;
 }
 
 .footer-content {
